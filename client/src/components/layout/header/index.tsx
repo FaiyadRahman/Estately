@@ -28,25 +28,25 @@ export const Header: React.FC = () => {
           justifyContent="flex-end"
           alignItems="center"
         >
-          {/* <IconButton
+          <IconButton
             onClick={() => {
               setMode();
             }}
           >
             {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
-          </IconButton> */}
+          </IconButton>
           <Stack
             direction="row"
             gap="16px"
             alignItems="center"
             justifyContent="center"
           >
-            {user?.name ? (
-              <Typography variant="subtitle2">{user?.name}</Typography>
+            {user?.firstname ? (
+              <Typography variant="subtitle2">{user?.firstname}</Typography>
             ) : null}
-            {user?.avatar ? (
-              <Avatar src={user?.avatar} alt={user?.name} />
-            ) : null}
+            {user?.avater ? (
+              <Avatar src={user?.avater} alt={user?.firstname} />
+            ) : <Avatar />}
           </Stack>
         </Stack>
       </Toolbar>
