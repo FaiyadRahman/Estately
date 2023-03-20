@@ -41,11 +41,12 @@ const createUser = asyncHandler(async (req, res) => {
       res.status(400).json({ message: "Invalid user data recieved" });
     }
 });
+
 const getUserInfoById = async (req, res) => {
   const {id} = req.params
   const user = await User.findOne({ _id: id });
-    if (property) {
-        res.status(200).json(property);
+    if (user) {
+        res.status(200).json(user);
     } else {
         res.status(404).json({ message: "user not found" });
     }

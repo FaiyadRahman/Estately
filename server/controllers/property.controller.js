@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const Property = require("../models/property");
 const User = require("../models/user");
 require("dotenv").config();
@@ -83,15 +83,50 @@ const createProperty = async (req, res) => {
 
 const getPropertyDetail = async (req, res) => {
     const { id } = req.params;
-    const property = await Property.findOne({ _id: id });
+    let property = await Property.findOne({ _id: id });
     if (property) {
-        res.status(200).json(property);
+        // console.log(property.creator);
+        const id = property.creator.toHexString();
+        const user = await User.findById(id).lean();
+        const userInfo = {
+            name: user.firstname + " " + user.lastname,
+            email: user.email,
+            avater: user.avater,
+        };
+        const response = {
+            title: property.title,
+            description: property.description,
+            propertyType: property.propertyType,
+            location: property.location,
+            price: property.price,
+            photo: property.photo,
+            creator: {
+                name: user.firstname + " " + user.lastname,
+                email: user.email,
+                avater: user.avater,
+            },
+        };
+        // const response = { ...property, userInfo };
+        console.log(response);
+
+        // console.log(property);
+        res.status(200).json(response);
     } else {
         res.status(404).json({ message: "property not found" });
     }
 };
 const updateProperty = async (req, res) => {};
-const deleteProperty = async (req, res) => {};
+const deleteProperty = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await Property.findByIdAndDelete(id);
+
+        res.status(200).json({ message: "Property deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 module.exports = {
     getAllProperties,

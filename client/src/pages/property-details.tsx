@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@pankod/refine-mui";
 import { useDelete, useGetIdentity, useShow } from "@pankod/refine-core";
 import { useParams, useNavigate } from "@pankod/refine-react-router-v6";
+import { useEffect, useState } from "react";
 import {
     ChatBubble,
     Delete,
@@ -10,6 +11,13 @@ import {
     Star,
 } from "@mui/icons-material";
 import { CustomButton } from "components";
+import axios from "axios";
+
+function checkImage(url: any) {
+    const img = new Image();
+    img.src = url;
+    return img.width !== 0 && img.height !== 0;
+}
 
 const PropertyDetails = () => {
     const navigate = useNavigate();
@@ -17,27 +25,39 @@ const PropertyDetails = () => {
     const { id } = useParams();
     const { mutate } = useDelete();
     const { queryResult } = useShow();
+    const [ownerName, setOwnerName] = useState("");
+    const [ownerAvater, setOwnerAvater] = useState("");
+    const [currentUser, setCurrentUser] = useState(false);
 
     const { data, isLoading, isError } = queryResult;
     const propertyDetails = data?.data ?? {};
-    console.log(propertyDetails.creator)
-    console.log(user.email)
-    const creator = fetch(`http://localhost:3500/users/${propertyDetails.creator}`,
-    {
-        method:"GET"
 
-    })
-    // console.log(JSON.stringify(propertyDetails))
-    // const isCurrentUser = user.email === propertyDetails.creator.email;
 
-    function checkImage(url: any) {
-        const img = new Image();
-        img.src = url;
-        return img.width !== 0 && img.height !== 0;
-    }
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error</div>;
+
+    const isCurrentUser = user.email === propertyDetails.creator.email;
+    console.log("user1111111111111 " + JSON.stringify(user));
+    console.log(isCurrentUser)
+    const handleDeleteProperty = () => {
+        const response = window.confirm(
+            "Are you sure you want to delete this property?"
+        );
+        if (response) {
+            mutate(
+                {
+                    resource: "properties",
+                    id: id as string,
+                },
+                {
+                    onSuccess: () => {
+                        navigate("/properties");
+                    },
+                }
+            );
+        }
+    };
 
     return (
         <Box
@@ -54,7 +74,7 @@ const PropertyDetails = () => {
                 mt={"20opx"}
                 display={"flex"}
                 flexDirection={{ xs: "column", lg: "row" }}
-                gap={4}
+                gap={10}
             >
                 <Box flex={1} maxWidth={764}>
                     <img
@@ -129,82 +149,81 @@ const PropertyDetails = () => {
                                 {propertyDetails.description}
                             </Typography>
                         </Stack>
-
-                        {/* <Box
-                            width="100%"
-                            flex={1}
-                            maxWidth={326}
-                            display="flex"
-                            flexDirection="column"
-                            gap="20px"
+                    </Box>
+                </Box>
+                <Box
+                    width="100%"
+                    flex={1}
+                    maxWidth={326}
+                    display="flex"
+                    flexDirection="column"
+                    gap="20px"
+                >
+                    <Stack
+                        width="100%"
+                        p={2}
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        border="1px solid #E4E4E4"
+                        borderRadius={2}
+                    >
+                        <Stack
+                            mt={2}
+                            justifyContent="center"
+                            alignItems="center"
+                            textAlign="center"
                         >
-                            <Stack
-                                width="100%"
-                                p={2}
-                                direction="column"
-                                justifyContent="center"
-                                alignItems="center"
-                                border="1px solid #E4E4E4"
-                                borderRadius={2}
-                            >
-                                <Stack
-                                    mt={2}
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    textAlign="center"
+                            <img
+                                src={
+                                    propertyDetails.creator.email
+                                        ? propertyDetails.creator.avater
+                                        : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                }
+                                alt="avatar"
+                                width={90}
+                                height={90}
+                                style={{
+                                    borderRadius: "100%",
+                                    objectFit: "cover",
+                                }}
+                            />
+
+                            <Box mt="15px">
+                                <Typography
+                                    fontSize={18}
+                                    fontWeight={600}
+                                    color="#11142D"
                                 >
-                                    <img
-                                        src={
-                                            checkImage(
-                                                propertyDetails.creator.avater
-                                            )
-                                                ? propertyDetails.creator.avater
-                                                : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                        }
-                                        alt="avatar"
-                                        width={90}
-                                        height={90}
-                                        style={{
-                                            borderRadius: "100%",
-                                            objectFit: "cover",
-                                        }}
-                                    />
+                                    {propertyDetails.creator.name}
+                                </Typography>
+                                <Typography
+                                    mt="5px"
+                                    fontSize={14}
+                                    fontWeight={400}
+                                    color="#808191"
+                                >
+                                    Agent
+                                </Typography>
+                            </Box>
 
-                                    <Box mt="15px">
-                                        <Typography
-                                            fontSize={18}
-                                            fontWeight={600}
-                                            color="#11142D"
-                                        >
-                                            {propertyDetails.creator.name}
-                                        </Typography>
-                                        <Typography
-                                            mt="5px"
-                                            fontSize={14}
-                                            fontWeight={400}
-                                            color="#808191"
-                                        >
-                                            Agent
-                                        </Typography>
-                                    </Box>
+                            <Stack
+                                mt="15px"
+                                direction="row"
+                                alignItems="center"
+                                gap={1}
+                            >
+                                <Place sx={{ color: "#808191" }} />
+                                <Typography
+                                    fontSize={14}
+                                    fontWeight={400}
+                                    color="#808191"
+                                >
+                                    {propertyDetails.location}
+                                </Typography>
+                            </Stack>
 
-                                    <Stack
-                                        mt="15px"
-                                        direction="row"
-                                        alignItems="center"
-                                        gap={1}
-                                    >
-                                        <Place sx={{ color: "#808191" }} />
-                                        <Typography
-                                            fontSize={14}
-                                            fontWeight={400}
-                                            color="#808191"
-                                        >
-                                            North Carolina, USA
-                                        </Typography>
-                                    </Stack>
-
-                                    <Typography
+                            {/* <Typography
                                         mt={1}
                                         fontSize={16}
                                         fontWeight={600}
@@ -215,85 +234,65 @@ const PropertyDetails = () => {
                                                 .allProperties.length
                                         }{" "}
                                         Properties
-                                    </Typography>
-                                </Stack>
+                                    </Typography> */}
+                        </Stack>
 
-                                <Stack
-                                    width="100%"
-                                    mt="25px"
-                                    direction="row"
-                                    flexWrap="wrap"
-                                    gap={2}
-                                >
-                                    <CustomButton
-                                        title={
-                                            !isCurrentUser ? "Message" : "Edit"
-                                        }
-                                        backgroundColor="#475BE8"
-                                        color="#FCFCFC"
-                                        fullWidth
-                                        icon={
-                                            !isCurrentUser ? (
-                                                <ChatBubble />
-                                            ) : (
-                                                <Edit />
-                                            )
-                                        }
-                                        handleClick={() => {
-                                            if (isCurrentUser) {
-                                                navigate(
-                                                    `/properties/edit/${propertyDetails._id}`
-                                                );
-                                            }
-                                        }}
-                                    />
-                                    <CustomButton
-                                        title={
-                                            !isCurrentUser ? "Call" : "Delete"
-                                        }
-                                        backgroundColor={
-                                            !isCurrentUser
-                                                ? "#2ED480"
-                                                : "#d42e2e"
-                                        }
-                                        color="#FCFCFC"
-                                        fullWidth
-                                        icon={
-                                            !isCurrentUser ? (
-                                                <Phone />
-                                            ) : (
-                                                <Delete />
-                                            )
-                                        }
-                                        handleClick={() => {
-                                            // if (isCurrentUser)
-                                                // handleDeleteProperty();
-                                        }}
-                                    />
-                                </Stack>
-                            </Stack>
+                        <Stack
+                            width="100%"
+                            mt="25px"
+                            direction="row"
+                            flexWrap="wrap"
+                            gap={2}
+                        >
+                            <CustomButton
+                                title={!currentUser ? "Message" : "Edit"}
+                                backgroundColor="#475BE8"
+                                color="#FCFCFC"
+                                fullWidth
+                                icon={!currentUser ? <ChatBubble /> : <Edit />}
+                                handleClick={() => {
+                                    if (currentUser) {
+                                        navigate(
+                                            `/properties/edit/${propertyDetails._id}`
+                                        );
+                                    }
+                                }}
+                            />
+                            <CustomButton
+                                title={!currentUser ? "Call" : "Delete"}
+                                backgroundColor={
+                                    !currentUser ? "#2ED480" : "#d42e2e"
+                                }
+                                color="#FCFCFC"
+                                fullWidth
+                                icon={!currentUser ? <Phone /> : <Delete />}
+                                handleClick={() => {
+                                    if (currentUser) handleDeleteProperty();
+                                }}
+                            />
+                        </Stack>
+                    </Stack>
 
-                            <Stack>
-                                <img
-                                    src="https://serpmedia.org/scigen/images/googlemaps-nyc-standard.png?crc=3787557525"
-                                    width="100%"
-                                    height={306}
-                                    style={{
-                                        borderRadius: 10,
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            </Stack>
+                    <Stack>
+                        <img
+                            src="https://serpmedia.org/scigen/images/googlemaps-nyc-standard.png?crc=3787557525"
+                            width="100%"
+                            height={306}
+                            style={{
+                                borderRadius: 10,
+                                objectFit: "cover",
+                            }}
+                            alt="logo"
+                        />
+                    </Stack>
 
-                            <Box>
-                                <CustomButton
-                                    title="Book Now"
-                                    backgroundColor="#475BE8"
-                                    color="#FCFCFC"
-                                    fullWidth
-                                />
-                            </Box>
-                        </Box> */}
+                    <Box>
+                        <CustomButton
+                            title="Book Now"
+                            backgroundColor="#475BE8"
+                            color="#FCFCFC"
+                            fullWidth
+                        />
                     </Box>
                 </Box>
             </Box>

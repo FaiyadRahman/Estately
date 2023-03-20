@@ -52,64 +52,66 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
     return request;
 });
 
-axiosInstance.interceptors.response.use((response) => {
-    return response
-  }, async function (error) {
-    const originalRequest = error.config;
-    if (error.response.status === 403 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const access_token = await refreshAccessToken();            
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
-      return axiosInstance(originalRequest);
+axiosInstance.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async function (error) {
+        const originalRequest = error.config;
+        if (error.response.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            const access_token = await refreshAccessToken();
+            axios.defaults.headers.common["Authorization"] =
+                "Bearer " + access_token;
+            return axiosInstance(originalRequest);
+        }
+        return Promise.reject(error);
     }
-    return Promise.reject(error);
-  });
+);
 
-  const refreshAccessToken = async() => {
+const refreshAccessToken = async () => {
     try {
         const response = await fetch("http://localhost:3500/auth/refresh", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
         });
-        return response
-  } catch (err) {
-    console.log(err);
-  }
-}
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 function App() {
     const authProvider: AuthProvider = {
-        login: async ({accessToken}) => {
+        login: async ({ accessToken }) => {
             const profileObj = accessToken ? parseJwt(accessToken) : null;
-            
+
             const data = JSON.parse(JSON.stringify(profileObj)).UserInfo;
-            localStorage.setItem(
-                "user", JSON.stringify({...data})
-            );
+            localStorage.setItem("user", JSON.stringify({ ...data }));
+            console.log(data);
+
             localStorage.setItem("token", `${accessToken}`);
             // localStorage.setItem("use)
             return Promise.resolve();
         },
-        logout: async() => {
+        logout: async () => {
             const token = localStorage.getItem("token");
 
             if (token && typeof window !== "undefined") {
-                const resposne = fetch("http://localhost:3500/auth/logout",
-                {
+                const response = fetch("http://localhost:3500/auth/logout", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                      },
-                })
+                    },
+                });
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
                 axios.defaults.headers.common = {};
                 window.google?.accounts.id.revoke(token, () => {
                     return Promise.resolve();
                 });
-
             }
 
             return Promise.resolve();
@@ -142,7 +144,10 @@ function App() {
                 />
                 <RefineSnackbarProvider>
                     <Refine
-                        dataProvider={dataProvider("http://localhost:3500", axiosInstance)}
+                        dataProvider={dataProvider(
+                            "http://localhost:3500",
+                            axiosInstance
+                        )}
                         notificationProvider={notificationProvider}
                         ReadyPage={ReadyPage}
                         catchAll={<ErrorComponent />}
