@@ -1,15 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { useLogin } from "@pankod/refine-core";
-import { Container, Box, TextField, Typography } from "@pankod/refine-mui";
-import { Link, Navigate } from "@pankod/refine-react-router-v6";
+import { useRegister, useLogin } from "@pankod/refine-core"
+import { Container, Box, TextField } from "@pankod/refine-mui";
+import { useState } from "react";
 import { yariga } from "../assets";
-
-import { CredentialResponse } from "../interfaces/google";
 import { CustomButton } from "components";
-import { Signup } from "./signup";
 
-export const Login: React.FC = () => {
-    const { mutate: login } = useLogin<CredentialResponse>();
+
+type FormVariables = {
+    email: string;
+    password: string;
+};
+
+export const Signup = () => {
+    const { mutate: register } = useRegister<FormVariables>();
+    const { mutate: login } = useLogin<FormVariables>();
+
+    const onSubmit = (values: FormVariables) => {
+        register(values, {
+            onSuccess: () => {
+                login(values);
+            },
+        });
+    };
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,7 +56,7 @@ export const Login: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setPassword(event.target.value);
-    };
+    }
 
     return (
         <Box
@@ -75,6 +86,7 @@ export const Login: React.FC = () => {
                     <div>
                         <img src={yariga} alt="yariga Logo" />
                     </div>
+
                     <Box mt={4} minWidth="450px">
                         <TextField
                             variant="outlined"
@@ -123,16 +135,6 @@ export const Login: React.FC = () => {
                                 title="Login"
                                 fullWidth={true}
                                 handleClick={handleLoginWithEmail}
-                            />
-                        </Box>
-                        <Box mt={2}>
-                            <CustomButton
-                                type="button"
-                                backgroundColor="#475be8"
-                                color="#fcfcfc"
-                                title="Register"
-                                fullWidth={true}
-                                handleClick={() => <Navigate to="/signup" />}
                             />
                         </Box>
                     </Box>

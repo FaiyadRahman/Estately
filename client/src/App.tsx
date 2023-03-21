@@ -1,5 +1,4 @@
-import React from "react";
-
+import { BrowserRouter, Routes, Route } from "@pankod/refine-react-router-v6";
 import { Refine, AuthProvider } from "@pankod/refine-core";
 import {
     notificationProvider,
@@ -35,6 +34,7 @@ import {
     AgentProfile,
     EditProperty,
 } from "pages";
+import { Signup } from "pages/signup";
 
 const axiosInstance = axios.create();
 
@@ -140,57 +140,61 @@ function App() {
                 <GlobalStyles
                     styles={{ html: { WebkitFontSmoothing: "auto" } }}
                 />
-                <RefineSnackbarProvider>
-                    <Refine
-                        dataProvider={dataProvider(
-                            "http://localhost:3500",
-                            axiosInstance
-                        )}
-                        notificationProvider={notificationProvider}
-                        ReadyPage={ReadyPage}
-                        catchAll={<ErrorComponent />}
-                        resources={[
-                            {
-                                name: "properties",
-                                list: AllProperties,
-                                show: PropertyDetails,
-                                create: CreateProperty,
-                                edit: EditProperty,
-                                icon: <VillaOutlined />,
-                            },
-                            {
-                                name: "agents",
-                                list: Agents,
-                                show: AgentProfile,
-                                icon: <PeopleOutline />,
-                            },
-                            {
-                                name: "reviews",
-                                list: Home,
-                                icon: <StarOutlineRounded />,
-                            },
-                            {
-                                name: "messages",
-                                list: Home,
-                                icon: <ChatBubbleOutline />,
-                            },
-                            {
-                                name: "my-profile",
-                                options: { label: "My Profile" },
-                                list: MyProfile,
-                                icon: <AccountCircleOutlined />,
-                            },
-                        ]}
-                        Title={Title}
-                        Sider={Sider}
-                        Layout={Layout}
-                        Header={Header}
-                        routerProvider={routerProvider}
-                        authProvider={authProvider}
-                        LoginPage={Login}
-                        DashboardPage={Home}
-                    />
-                </RefineSnackbarProvider>
+                {/* <BrowserRouter> */}
+                    <RefineSnackbarProvider>
+                        <Refine
+                            dataProvider={dataProvider(
+                                "http://localhost:3500",
+                                axiosInstance
+                            )}
+                            notificationProvider={notificationProvider}
+                            ReadyPage={ReadyPage}
+                            catchAll={<ErrorComponent />}
+                            resources={[
+                                {
+                                    name: "properties",
+                                    list: AllProperties,
+                                    show: PropertyDetails,
+                                    create: CreateProperty,
+                                    edit: EditProperty,
+                                    icon: <VillaOutlined />,
+                                },
+                                {
+                                    name: "agents",
+                                    list: Agents,
+                                    show: AgentProfile,
+                                    icon: <PeopleOutline />,
+                                },
+                                {
+                                    name: "reviews",
+                                    list: Home,
+                                    icon: <StarOutlineRounded />,
+                                },
+                                {
+                                    name: "messages",
+                                    list: Home,
+                                    icon: <ChatBubbleOutline />,
+                                },
+                                {
+                                    name: "my-profile",
+                                    options: { label: "My Profile" },
+                                    list: MyProfile,
+                                    icon: <AccountCircleOutlined />,
+                                },
+                            ]}
+                            Title={Title}
+                            Sider={Sider}
+                            Layout={Layout}
+                            Header={Header}
+                            routerProvider={routerProvider}
+                            authProvider={authProvider}
+                            LoginPage={Login}
+                            DashboardPage={Home}
+                        >
+                            
+                        </Refine>
+                    </RefineSnackbarProvider>
+                {/* </BrowserRouter> */}
             </ColorModeContextProvider>
         </>
     );
