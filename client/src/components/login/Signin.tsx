@@ -1,51 +1,34 @@
-import { useRegister, useLogin } from "@pankod/refine-core"
-import { Container, Box, TextField } from "@pankod/refine-mui";
 import { useState } from "react";
-import { yariga } from "../assets";
+import { useLogin } from "@pankod/refine-core";
+import {
+    Container,
+    Box,
+    TextField,
+    Button,
+    Stack,
+    Typography,
+} from "@pankod/refine-mui";
+
+import { yariga } from "../../assets";
+
 import { CustomButton } from "components";
 
-
-type FormVariables = {
-    email: string;
-    password: string;
-};
-
-export const Signup = () => {
-    const { mutate: register } = useRegister<FormVariables>();
-    const { mutate: login } = useLogin<FormVariables>();
-
-    const onSubmit = (values: FormVariables) => {
-        register(values, {
-            onSuccess: () => {
-                login(values);
-            },
-        });
+const Signin = ({
+    onFormSwitch,
+}: {
+    onFormSwitch: (formName: string) => void;
+}) => {
+    type LoginVariables = {
+        email: string;
+        password: string;
     };
+    const { mutate: login } = useLogin<LoginVariables>();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLoginWithEmail = async () => {
-        try {
-            const response = await fetch("http://localhost:3500/auth", {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                login(data);
-            } else {
-                throw new Error("Login failed");
-            }
-        } catch (error) {
-            console.error("no worky");
-            // handle error here
-        }
+        login({ email, password });
     };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +39,7 @@ export const Signup = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setPassword(event.target.value);
-    }
+    };
 
     return (
         <Box
@@ -86,7 +69,6 @@ export const Signup = () => {
                     <div>
                         <img src={yariga} alt="yariga Logo" />
                     </div>
-
                     <Box mt={4} minWidth="450px">
                         <TextField
                             variant="outlined"
@@ -137,9 +119,24 @@ export const Signup = () => {
                                 handleClick={handleLoginWithEmail}
                             />
                         </Box>
+                        <Box mt={2}>
+                            <Stack direction={"row"}>
+                                <Typography fontSize={16}>
+                                    Don't have an account?
+                                    <Button
+                                        onClick={() => onFormSwitch("signup")}
+                                        sx={{ color: "#475be8" }}
+                                    >
+                                        Sign Up
+                                    </Button>
+                                </Typography>
+                            </Stack>
+                        </Box>
                     </Box>
                 </Box>
             </Container>
         </Box>
     );
 };
+
+export default Signin;

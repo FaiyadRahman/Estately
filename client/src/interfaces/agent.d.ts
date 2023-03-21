@@ -6,6 +6,8 @@ export interface AgentCardProp {
     lastname: string
     email: string,
     avatar: string,
+    phone: string,
+    location: string,
     properties: string[]
 }
 

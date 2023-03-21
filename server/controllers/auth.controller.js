@@ -25,6 +25,8 @@ const login = asyncHandler(async (req, res) => {
                 firstname: foundUser.firstname,
                 lastname: foundUser.lastname,
                 email: foundUser.email,
+                phone: foundUser.phone,
+                location: foundUser.location,
                 avater: foundUser.avater,
             },
         },
@@ -49,10 +51,10 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const signup = asyncHandler(async (req, res) => {
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, phone, location, email, password } = req.body;
 
     // confirm data
-    if (!firstname || !lastname || !password || !email) {
+    if (!firstname || !lastname || !password || !email || !location || !phone) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -67,19 +69,21 @@ const signup = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // default avater
-    const avater = `https://eu.ui-avatars.com/api/?name=${firstname}+${lastname}`;
+    const avater = `https://eu.ui-avatars.com/api/?name=${firstname}+${lastname}&background=random`;
 
     const userObject = {
         firstname,
         lastname,
         email,
+        phone,
+        location,
         password: hashedPassword,
         avater,
     };
 
     const user = await User.create(userObject);
     if (user) {
-        res.status(201).json({ message: `New user ${firstname} created` });
+        res.status(201).json({ message: `New user ${email} created` });
     } else {
         res.status(400).json({ message: "Invalid user data recieved" });
     }

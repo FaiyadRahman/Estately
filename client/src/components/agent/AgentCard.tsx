@@ -25,6 +25,8 @@ const AgentCard = ({
     lastname,
     email,
     avatar,
+    phone,
+    location,
     properties,
 }: AgentCardProp) => {
     const { data: currentUser } = useGetIdentity();
@@ -71,7 +73,7 @@ const AgentCard = ({
                     alignItems="center"
                 >
                     <Typography fontSize={22} fontWeight={600} color="#11142d">
-                        {firstname +" " +  lastname}
+                        {firstname + " " + lastname}
                     </Typography>
                     <Typography fontSize={14} color="#808191">
                         Real-Estate Agent
@@ -90,11 +92,11 @@ const AgentCard = ({
                     />
                     <InfoBar
                         icon={<Place sx={{ color: "#808191" }} />}
-                        name="London"
+                        name={location}
                     />
                     <InfoBar
                         icon={<Phone sx={{ color: "#808191" }} />}
-                        name="+502-3231-4141"
+                        name={phone}
                     />
                     <InfoBar
                         icon={<LocationCity sx={{ color: "#808191" }} />}

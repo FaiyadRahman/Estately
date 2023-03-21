@@ -33,6 +33,8 @@ const Agents = () => {
                     firstname={agent.firstname}
                     lastname={agent.lastname}
                     email={agent.email}
+                    phone={agent.phone}
+                    location={agent.location}
                     avatar={agent.avater}
                     properties={agent.allProperties}
                     />

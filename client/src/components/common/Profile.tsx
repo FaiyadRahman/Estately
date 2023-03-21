@@ -4,7 +4,15 @@ import { Box, Stack, Typography } from "@pankod/refine-mui";
 import { ProfileProps, PropertyProps } from "interfaces/common";
 import PropertyCard from "./PropertyCard";
 
-const Profile = ({ type, name, avatar, email, properties }: ProfileProps) => {
+const Profile = ({
+    type,
+    name,
+    avatar,
+    email,
+    phone,
+    location,
+    properties,
+}: ProfileProps) => {
     return (
         <Box>
             <Typography fontSize={25} fontWeight={700} color="#11142D">
@@ -74,7 +82,7 @@ const Profile = ({ type, name, avatar, email, properties }: ProfileProps) => {
                                             fontWeight={500}
                                             color="#808191"
                                         >
-                                            Address
+                                            Location
                                         </Typography>
                                         <Box
                                             display="flex"
@@ -87,8 +95,7 @@ const Profile = ({ type, name, avatar, email, properties }: ProfileProps) => {
                                                 fontSize={14}
                                                 color="#11142D"
                                             >
-                                                4517 Washington Ave. Manchaster,
-                                                Kentucky 39495
+                                                {location}
                                             </Typography>
                                         </Box>
                                     </Stack>
@@ -121,7 +128,7 @@ const Profile = ({ type, name, avatar, email, properties }: ProfileProps) => {
                                                     color="#11142D"
                                                     noWrap
                                                 >
-                                                    +0123 456 7890
+                                                    {phone}
                                                 </Typography>
                                             </Box>
                                         </Stack>

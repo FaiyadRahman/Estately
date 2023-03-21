@@ -1,4 +1,3 @@
-import { BrowserRouter, Routes, Route } from "@pankod/refine-react-router-v6";
 import { Refine, AuthProvider } from "@pankod/refine-core";
 import {
     notificationProvider,
@@ -34,7 +33,6 @@ import {
     AgentProfile,
     EditProperty,
 } from "pages";
-import { Signup } from "pages/signup";
 
 const axiosInstance = axios.create();
 
@@ -84,21 +82,44 @@ const refreshAccessToken = async () => {
 
 function App() {
     const authProvider: AuthProvider = {
-        login: async ({ accessToken }) => {
-            const profileObj = accessToken ? parseJwt(accessToken) : null;
+        login: async ({ email, password }) => {
+            try {
+                const response = await fetch("http://localhost:3500/auth", {
+                    method: "POST",
+                    body: JSON.stringify({ email, password }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
 
-            const data = JSON.parse(JSON.stringify(profileObj)).UserInfo;
-            localStorage.setItem("user", JSON.stringify({ ...data }));
-            console.log(data);
+                if (response.ok) {
+                    const accessToken = await response.json();
+                    console.log(accessToken);
+                    const profileObj = accessToken
+                        ? parseJwt(accessToken.accessToken)
+                        : null;
 
-            localStorage.setItem("token", `${accessToken}`);
-            return Promise.resolve();
+                    const data = JSON.parse(
+                        JSON.stringify(profileObj)
+                    ).UserInfo;
+                    localStorage.setItem("user", JSON.stringify({ ...data }));
+                    console.log(data);
+
+                    localStorage.setItem("token", `${accessToken.accessToken}`);
+                    return Promise.resolve();
+                } else {
+                    throw new Error("Login failed");
+                }
+            } catch (error) {
+                console.error(error);
+                return Promise.reject();
+            }
         },
         logout: async () => {
             const token = localStorage.getItem("token");
 
             if (token && typeof window !== "undefined") {
-                const response = fetch("http://localhost:3500/auth/logout", {
+                fetch("http://localhost:3500/auth/logout", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -107,12 +128,33 @@ function App() {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
                 axios.defaults.headers.common = {};
-                window.google?.accounts.id.revoke(token, () => {
-                    return Promise.resolve();
-                });
+                return Promise.resolve();
             }
 
             return Promise.resolve();
+        },
+        register: async (signUpInfo) => {
+            try {
+                const response = await fetch(
+                    "http://localhost:3500/auth/signup",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(signUpInfo),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    return Promise.resolve();
+                } else {
+                    throw new Error("Login failed");
+                }
+            } catch (error) {
+                console.error("no worky");
+                return Promise.reject();
+            }
         },
         checkError: () => Promise.resolve(),
         checkAuth: async () => {
@@ -140,61 +182,57 @@ function App() {
                 <GlobalStyles
                     styles={{ html: { WebkitFontSmoothing: "auto" } }}
                 />
-                {/* <BrowserRouter> */}
-                    <RefineSnackbarProvider>
-                        <Refine
-                            dataProvider={dataProvider(
-                                "http://localhost:3500",
-                                axiosInstance
-                            )}
-                            notificationProvider={notificationProvider}
-                            ReadyPage={ReadyPage}
-                            catchAll={<ErrorComponent />}
-                            resources={[
-                                {
-                                    name: "properties",
-                                    list: AllProperties,
-                                    show: PropertyDetails,
-                                    create: CreateProperty,
-                                    edit: EditProperty,
-                                    icon: <VillaOutlined />,
-                                },
-                                {
-                                    name: "agents",
-                                    list: Agents,
-                                    show: AgentProfile,
-                                    icon: <PeopleOutline />,
-                                },
-                                {
-                                    name: "reviews",
-                                    list: Home,
-                                    icon: <StarOutlineRounded />,
-                                },
-                                {
-                                    name: "messages",
-                                    list: Home,
-                                    icon: <ChatBubbleOutline />,
-                                },
-                                {
-                                    name: "my-profile",
-                                    options: { label: "My Profile" },
-                                    list: MyProfile,
-                                    icon: <AccountCircleOutlined />,
-                                },
-                            ]}
-                            Title={Title}
-                            Sider={Sider}
-                            Layout={Layout}
-                            Header={Header}
-                            routerProvider={routerProvider}
-                            authProvider={authProvider}
-                            LoginPage={Login}
-                            DashboardPage={Home}
-                        >
-                            
-                        </Refine>
-                    </RefineSnackbarProvider>
-                {/* </BrowserRouter> */}
+                <RefineSnackbarProvider>
+                    <Refine
+                        dataProvider={dataProvider(
+                            "http://localhost:3500",
+                            axiosInstance
+                        )}
+                        notificationProvider={notificationProvider}
+                        ReadyPage={ReadyPage}
+                        catchAll={<ErrorComponent />}
+                        resources={[
+                            {
+                                name: "properties",
+                                list: AllProperties,
+                                show: PropertyDetails,
+                                create: CreateProperty,
+                                edit: EditProperty,
+                                icon: <VillaOutlined />,
+                            },
+                            {
+                                name: "agents",
+                                list: Agents,
+                                show: AgentProfile,
+                                icon: <PeopleOutline />,
+                            },
+                            {
+                                name: "reviews",
+                                list: Home,
+                                icon: <StarOutlineRounded />,
+                            },
+                            {
+                                name: "messages",
+                                list: Home,
+                                icon: <ChatBubbleOutline />,
+                            },
+                            {
+                                name: "my-profile",
+                                options: { label: "My Profile" },
+                                list: MyProfile,
+                                icon: <AccountCircleOutlined />,
+                            },
+                        ]}
+                        Title={Title}
+                        Sider={Sider}
+                        Layout={Layout}
+                        Header={Header}
+                        routerProvider={routerProvider}
+                        authProvider={authProvider}
+                        LoginPage={Login}
+                        DashboardPage={Home}
+                    ></Refine>
+                </RefineSnackbarProvider>
             </ColorModeContextProvider>
         </>
     );

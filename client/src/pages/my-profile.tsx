@@ -16,6 +16,8 @@ const MyProfile = () => {
       type="My"
       name={MyProfile.firstname + " " + MyProfile.lastname}
       email={MyProfile.email}
+      phone={MyProfile.phone}
+      location={MyProfile.location}
       avatar={MyProfile.avater}
       properties={MyProfile.allProperties}
     />;
