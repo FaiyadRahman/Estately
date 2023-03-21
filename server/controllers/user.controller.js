@@ -4,11 +4,16 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 
 const getAllUsers = async (req, res) => {
-    const users = await User.find().select("-password").lean();
-    if (!users?.length) {
-      return res.status(400).json({ message: "No users found" });
+    try {
+        const users = await User.find().select("-password").lean();
+        if (!users?.length) {
+            return res.status(400).json({ message: "No users found" });
+        }
+        res.status(200).json(users);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message });
     }
-    res.json(users)
 };
 
 const createUser = asyncHandler(async (req, res) => {
@@ -30,25 +35,35 @@ const createUser = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // default avater
-    const avater = `https://eu.ui-avatars.com/api/?name=${firstname}+${lastname}`
+    const avater = `https://eu.ui-avatars.com/api/?name=${firstname}+${lastname}`;
 
-    const userObject = { firstname, lastname, email, password: hashedPassword, avater  };
+    const userObject = {
+        firstname,
+        lastname,
+        email,
+        password: hashedPassword,
+        avater,
+    };
 
     const user = await User.create(userObject);
     if (user) {
-      res.status(201).json({ message: `New user ${firstname} created` });
+        res.status(201).json({ message: `New user ${firstname} created` });
     } else {
-      res.status(400).json({ message: "Invalid user data recieved" });
+        res.status(400).json({ message: "Invalid user data recieved" });
     }
 });
 
 const getUserInfoById = async (req, res) => {
-  const {id} = req.params
-  const user = await User.findOne({ _id: id });
-    if (user) {
-        res.status(200).json(user);
-    } else {
-        res.status(404).json({ message: "user not found" });
+    try {
+        const { id } = req.params;
+        const user = await User.findOne({ _id: id }).populate("allProperties");
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: "user not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 

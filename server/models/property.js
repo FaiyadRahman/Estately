@@ -10,6 +10,6 @@ const PropertySchema = new mongoose.Schema({
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
 });
 
-const propertyModel = mongoose.model("Properties", PropertySchema);
+const propertyModel = mongoose.model("Property", PropertySchema);
 
 module.exports = propertyModel;

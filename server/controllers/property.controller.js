@@ -85,15 +85,10 @@ const getPropertyDetail = async (req, res) => {
     const { id } = req.params;
     let property = await Property.findOne({ _id: id });
     if (property) {
-        // console.log(property.creator);
-        const id = property.creator.toHexString();
-        const user = await User.findById(id).lean();
-        const userInfo = {
-            name: user.firstname + " " + user.lastname,
-            email: user.email,
-            avater: user.avater,
-        };
+        const userId = property.creator.toHexString();
+        const user = await getUser(userId);
         const response = {
+            _id: property._id,
             title: property.title,
             description: property.description,
             propertyType: property.propertyType,
@@ -106,27 +101,58 @@ const getPropertyDetail = async (req, res) => {
                 avater: user.avater,
             },
         };
-        // const response = { ...property, userInfo };
         console.log(response);
-
-        // console.log(property);
         res.status(200).json(response);
     } else {
         res.status(404).json({ message: "property not found" });
     }
 };
-const updateProperty = async (req, res) => {};
+const updateProperty = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, propertyType, location, price, photo } =
+            req.body;
+        const photoUrl = cloudinary.uploader.upload(photo);
+        await Property.findByIdAndUpdate(
+            { _id: id },
+            {
+                title,
+                description,
+                propertyType,
+                location,
+                price,
+                photo: photoUrl.url || photo,
+            }
+        );
+        res.status(200).json({ message: "Property updated successfully" });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const deleteProperty = async (req, res) => {
     try {
         const { id } = req.params;
-
+        const property = await Property.findById(id);
+        const userId = property.creator.toHexString();
+        const user = await getUser(userId);
+        await user.allProperties.pull(id);
+        user.save();
         await Property.findByIdAndDelete(id);
 
         res.status(200).json({ message: "Property deleted successfully" });
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };
+
+async function getUser(id) {
+    const user = await User.findById(id);
+    console.log(user);
+    return user;
+}
 
 module.exports = {
     getAllProperties,

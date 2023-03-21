@@ -5,6 +5,7 @@ import { Container, Box, TextField, Button } from "@pankod/refine-mui";
 import { yariga } from "../assets";
 
 import { CredentialResponse } from "../interfaces/google";
+import { CustomButton } from "components";
 
 export const Login: React.FC = () => {
     const { mutate: login } = useLogin<CredentialResponse>();
@@ -103,13 +104,24 @@ export const Login: React.FC = () => {
                     <Box mt={4}>
                         <GoogleButton />
                     </Box>
-                    <Box mt={4}>
+                    <Box mt={4} minWidth="450px">
                         <TextField
                             variant="outlined"
                             label="Email"
                             fullWidth
                             value={email}
                             onChange={handleEmailChange}
+                            sx={{
+                                "& label.Mui-focused": {
+                                    color: "#475be8",
+                                },
+
+                                "& .MuiOutlinedInput-root": {
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#475be8",
+                                    },
+                                },
+                            }}
                         />
                         <Box mt={2}>
                             <TextField
@@ -119,16 +131,28 @@ export const Login: React.FC = () => {
                                 type="password"
                                 value={password}
                                 onChange={handlePasswordChange}
+                                sx={{
+                                    "& label.Mui-focused": {
+                                        color: "#475be8",
+                                    },
+
+                                    "& .MuiOutlinedInput-root": {
+                                        "&.Mui-focused fieldset": {
+                                            borderColor: "#475be8",
+                                        },
+                                    },
+                                }}
                             />
                         </Box>
                         <Box mt={2}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleLoginWithEmail}
-                            >
-                                Login with Email and Password
-                            </Button>
+                            <CustomButton
+                                type="button"
+                                backgroundColor="#475be8"
+                                color="#fcfcfc"
+                                title="submit"
+                                fullWidth={true}
+                                handleClick={handleLoginWithEmail}
+                            />
                         </Box>
                     </Box>
                 </Box>

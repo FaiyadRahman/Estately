@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from "@pankod/refine-mui";
 import { useDelete, useGetIdentity, useShow } from "@pankod/refine-core";
 import { useParams, useNavigate } from "@pankod/refine-react-router-v6";
-import { useEffect, useState } from "react";
 import {
     ChatBubble,
     Delete,
@@ -11,13 +10,6 @@ import {
     Star,
 } from "@mui/icons-material";
 import { CustomButton } from "components";
-import axios from "axios";
-
-function checkImage(url: any) {
-    const img = new Image();
-    img.src = url;
-    return img.width !== 0 && img.height !== 0;
-}
 
 const PropertyDetails = () => {
     const navigate = useNavigate();
@@ -25,21 +17,16 @@ const PropertyDetails = () => {
     const { id } = useParams();
     const { mutate } = useDelete();
     const { queryResult } = useShow();
-    const [ownerName, setOwnerName] = useState("");
-    const [ownerAvater, setOwnerAvater] = useState("");
-    const [currentUser, setCurrentUser] = useState(false);
 
     const { data, isLoading, isError } = queryResult;
     const propertyDetails = data?.data ?? {};
 
-
-
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error</div>;
-
+    console.log(propertyDetails)
     const isCurrentUser = user.email === propertyDetails.creator.email;
     console.log("user1111111111111 " + JSON.stringify(user));
-    console.log(isCurrentUser)
+    console.log(isCurrentUser);
     const handleDeleteProperty = () => {
         const response = window.confirm(
             "Are you sure you want to delete this property?"
@@ -101,14 +88,31 @@ const PropertyDetails = () => {
                             flexWrap={"wrap"}
                             alignItems="center"
                         >
-                            <Typography
-                                fontSize={22}
-                                fontWeight={600}
-                                color={"#11142d"}
-                                textTransform={"capitalize"}
-                            >
-                                {propertyDetails.title}
-                            </Typography>
+                            <Stack mt="10px" gap={1}>
+                                <Typography
+                                    fontSize={26}
+                                    fontWeight={600}
+                                    color={"#11142d"}
+                                    textTransform={"capitalize"}
+                                >
+                                    {propertyDetails.title}
+                                </Typography>
+                                <Stack
+                                    mt={"-5px"}
+                                    direction="row"
+                                    alignItems="center"
+                                    gap={1}
+                                >
+                                    <Place sx={{ color: "#808191" }} />
+                                    <Typography
+                                        fontSize={14}
+                                        fontWeight={400}
+                                        color="#808191"
+                                    >
+                                        {propertyDetails.location}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
 
                             <Box>
                                 <Typography
@@ -207,22 +211,6 @@ const PropertyDetails = () => {
                                 </Typography>
                             </Box>
 
-                            <Stack
-                                mt="15px"
-                                direction="row"
-                                alignItems="center"
-                                gap={1}
-                            >
-                                <Place sx={{ color: "#808191" }} />
-                                <Typography
-                                    fontSize={14}
-                                    fontWeight={400}
-                                    color="#808191"
-                                >
-                                    {propertyDetails.location}
-                                </Typography>
-                            </Stack>
-
                             {/* <Typography
                                         mt={1}
                                         fontSize={16}
@@ -245,13 +233,13 @@ const PropertyDetails = () => {
                             gap={2}
                         >
                             <CustomButton
-                                title={!currentUser ? "Message" : "Edit"}
+                                title={!isCurrentUser ? "Message" : "Edit"}
                                 backgroundColor="#475BE8"
                                 color="#FCFCFC"
                                 fullWidth
-                                icon={!currentUser ? <ChatBubble /> : <Edit />}
+                                icon={!isCurrentUser ? <ChatBubble /> : <Edit />}
                                 handleClick={() => {
-                                    if (currentUser) {
+                                    if (isCurrentUser) {
                                         navigate(
                                             `/properties/edit/${propertyDetails._id}`
                                         );
@@ -259,15 +247,15 @@ const PropertyDetails = () => {
                                 }}
                             />
                             <CustomButton
-                                title={!currentUser ? "Call" : "Delete"}
+                                title={!isCurrentUser ? "Call" : "Delete"}
                                 backgroundColor={
-                                    !currentUser ? "#2ED480" : "#d42e2e"
+                                    !isCurrentUser ? "#2ED480" : "#d42e2e"
                                 }
                                 color="#FCFCFC"
                                 fullWidth
-                                icon={!currentUser ? <Phone /> : <Delete />}
+                                icon={!isCurrentUser ? <Phone /> : <Delete />}
                                 handleClick={() => {
-                                    if (currentUser) handleDeleteProperty();
+                                    if (isCurrentUser) handleDeleteProperty();
                                 }}
                             />
                         </Stack>
