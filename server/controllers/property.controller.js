@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 const Property = require("../models/property");
 const User = require("../models/user");
 require("dotenv").config();
@@ -55,6 +56,8 @@ const createProperty = async (req, res) => {
             propertyType,
             location,
             price,
+            startingMonth,
+            startingYear,
             photo,
             email,
         } = req.body;
@@ -69,6 +72,8 @@ const createProperty = async (req, res) => {
             propertyType,
             location,
             price,
+            startingMonth,
+            startingYear,
             photo: photoUrl.url,
             creator: user._id,
         });
@@ -87,6 +92,12 @@ const getPropertyDetail = async (req, res) => {
     if (property) {
         const userId = property.creator.toHexString();
         const user = await getUser(userId);
+        const totalRent = calculateTotalRent(
+            property.startingMonth,
+            property.startingYear.toString(),
+            property.price
+        );
+        console.log(totalRent)
         const response = {
             _id: property._id,
             title: property.title,
@@ -94,19 +105,24 @@ const getPropertyDetail = async (req, res) => {
             propertyType: property.propertyType,
             location: property.location,
             price: property.price,
+            startingMonth: property.startingMonth,
+            startingYear: property.startingYear,
             photo: property.photo,
             creator: {
                 name: user.firstname + " " + user.lastname,
                 email: user.email,
                 avater: user.avater,
             },
+            totalRent,
         };
-        console.log(response);
+        
+        // console.log(response);
         res.status(200).json(response);
     } else {
         res.status(404).json({ message: "property not found" });
     }
 };
+
 const updateProperty = async (req, res) => {
     try {
         const { id } = req.params;
@@ -152,6 +168,17 @@ async function getUser(id) {
     const user = await User.findById(id);
     console.log(user);
     return user;
+}
+
+
+function calculateTotalRent(startingMonth, startingYear, rent) {
+    const now = new Date();
+    const startDate = new Date(startingYear, startingMonth - 1); // month is 0-indexed in JavaScript, so subtract 1 from startingMonth
+    const monthsElapsed =
+        (now.getFullYear() - startDate.getFullYear()) * 12 +
+        now.getMonth() -
+        startDate.getMonth();
+    return monthsElapsed * rent;
 }
 
 module.exports = {

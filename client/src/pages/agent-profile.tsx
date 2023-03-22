@@ -18,6 +18,8 @@ const AgentProfile = () => {
             type="Agent"
             name={AgentProfile.firstname + " " + AgentProfile.lastname}
             email={AgentProfile.email}
+            phone={AgentProfile.phone}
+            location={AgentProfile.location}
             avatar={AgentProfile.avater}
             properties={AgentProfile.allProperties}
         />

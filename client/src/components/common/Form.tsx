@@ -9,7 +9,6 @@ import {
     Select,
     MenuItem,
     Button,
-    borderRadius,
 } from "@pankod/refine-mui";
 
 import { FormProps } from "interfaces/common";
@@ -24,6 +23,21 @@ const Form = ({
     onFinishHandler,
     propertyImage,
 }: FormProps) => {
+    const monthMenuItem = [
+        {number: "01", month: "January"},
+        {number: "02", month: "February"},
+        {number: "03", month: "March"},
+        {number: "04", month: "April"},
+        {number: "05", month: "May"},
+        {number: "06", month: "June"},
+        {number: "07", month: "July"},
+        {number: "08", month: "August"},
+        {number: "09", month: "September"},
+        {number: "10", month: "October"},
+        {number: "11", month: "November"},
+        {number: "12", month: "December"},
+
+    ].map((month) => <MenuItem value={month.number}>{month.month}</MenuItem>);
     return (
         <Box>
             <Typography fontSize={25} fontWeight={700} color="#11142d">
@@ -32,7 +46,7 @@ const Form = ({
             <Box mt={2.5} borderRadius="15px" padding="20px" bgcolor="#fcfcfc">
                 <form
                     style={{
-                        marginTop: "20px",
+                        marginTop: "10px",
                         width: "100%",
                         display: "flex",
                         flexDirection: "column",
@@ -44,12 +58,13 @@ const Form = ({
                         <FormHelperText
                             sx={{
                                 fontWeight: 500,
-                                margin: "10px",
+                                margin: "10px 0px",
+                                marginLeft: "0",
                                 fontSize: 16,
                                 color: "#11142d",
                             }}
                         >
-                            Enter property name
+                            Property name
                         </FormHelperText>
                         <TextField
                             fullWidth
@@ -65,6 +80,8 @@ const Form = ({
                             sx={{
                                 fontWeight: 500,
                                 margin: "10px",
+                                marginLeft: "0",
+
                                 fontSize: 16,
                                 color: "#11142d",
                             }}
@@ -74,7 +91,6 @@ const Form = ({
                         <TextareaAutosize
                             minRows={5}
                             required
-                            placeholder="Write description"
                             color="info"
                             style={{
                                 background: "transparent",
@@ -92,12 +108,12 @@ const Form = ({
                             <FormHelperText
                                 sx={{
                                     fontWeight: 500,
-                                    margin: "10px 0",
+                                    margin: "10px 0px",
                                     fontSize: 16,
                                     color: "#11142d",
                                 }}
                             >
-                                Select property type
+                                Property type
                             </FormHelperText>
                             <Select
                                 variant="outlined"
@@ -123,12 +139,12 @@ const Form = ({
                             <FormHelperText
                                 sx={{
                                     fontWeight: 500,
-                                    margin: "10px",
+                                    margin: "10px 0",
                                     fontSize: 16,
                                     color: "#11142d",
                                 }}
                             >
-                                Enter property price
+                                Rent per month
                             </FormHelperText>
                             <TextField
                                 fullWidth
@@ -140,13 +156,66 @@ const Form = ({
                                 {...register("price", { required: true })}
                             />
                         </FormControl>
+
+                        <FormControl sx={{ minWidth: "15%" }}>
+                            <FormHelperText
+                                sx={{
+                                    fontWeight: 500,
+                                    margin: "10px 0",
+                                    fontSize: 16,
+                                    color: "#11142d",
+                                }}
+                            >
+                                Starting month
+                            </FormHelperText>
+
+                            <Select
+                                variant="outlined"
+                                color="info"
+                                displayEmpty
+                                required
+                                inputProps={{
+                                    "aria-label": "Without Label",
+                                }}
+                                defaultValue="January"
+                                {...register("startingMonth", {
+                                    required: true,
+                                })}
+                            >
+                                {monthMenuItem}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormHelperText
+                                sx={{
+                                    fontWeight: 500,
+                                    margin: "10px 0",
+                                    fontSize: 16,
+                                    color: "#11142d",
+                                }}
+                            >
+                                Starting year
+                            </FormHelperText>
+                            <TextField
+                                fullWidth
+                                required
+                                id="outlined-basic"
+                                color="info"
+                                type="number"
+                                variant="outlined"
+                                {...register("startingYear", {
+                                    required: true,
+                                })}
+                            />
+                        </FormControl>
                     </Stack>
 
                     <FormControl>
                         <FormHelperText
                             sx={{
                                 fontWeight: 500,
-                                margin: "10px",
+                                margin: "10px 0",
                                 fontSize: 16,
                                 color: "#11142d",
                             }}
