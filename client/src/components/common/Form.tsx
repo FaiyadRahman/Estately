@@ -24,19 +24,18 @@ const Form = ({
     propertyImage,
 }: FormProps) => {
     const monthMenuItem = [
-        {number: "01", month: "January"},
-        {number: "02", month: "February"},
-        {number: "03", month: "March"},
-        {number: "04", month: "April"},
-        {number: "05", month: "May"},
-        {number: "06", month: "June"},
-        {number: "07", month: "July"},
-        {number: "08", month: "August"},
-        {number: "09", month: "September"},
-        {number: "10", month: "October"},
-        {number: "11", month: "November"},
-        {number: "12", month: "December"},
-
+        { number: 0, month: "January" },
+        { number: 1, month: "February" },
+        { number: 2, month: "March" },
+        { number: 3, month: "April" },
+        { number: 4, month: "May" },
+        { number: 5, month: "June" },
+        { number: 6, month: "July" },
+        { number: 7, month: "August" },
+        { number: 8, month: "September" },
+        { number: 9, month: "October" },
+        { number: 10, month: "November" },
+        { number: 11, month: "December" },
     ].map((month) => <MenuItem value={month.number}>{month.month}</MenuItem>);
     return (
         <Box>

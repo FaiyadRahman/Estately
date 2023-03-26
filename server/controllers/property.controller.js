@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const moment = require("moment");
 const Property = require("../models/property");
 const User = require("../models/user");
 require("dotenv").config();
@@ -66,14 +65,14 @@ const createProperty = async (req, res) => {
         const user = await User.findOne({ email }).session(session);
         if (!user) throw new Error("User not found");
         const photoUrl = await cloudinary.uploader.upload(photo);
+        const startingDate = new Date(startingYear, startingMonth);
         const newProperty = await Property.create({
             title,
             description,
             propertyType,
             location,
             price,
-            startingMonth,
-            startingYear,
+            startingDate,
             photo: photoUrl.url,
             creator: user._id,
         });
@@ -93,11 +92,10 @@ const getPropertyDetail = async (req, res) => {
         const userId = property.creator.toHexString();
         const user = await getUser(userId);
         const totalRent = calculateTotalRent(
-            property.startingMonth,
-            property.startingYear.toString(),
+            property.startingDate,
             property.price
         );
-        console.log(totalRent)
+        console.log(totalRent);
         const response = {
             _id: property._id,
             title: property.title,
@@ -105,8 +103,7 @@ const getPropertyDetail = async (req, res) => {
             propertyType: property.propertyType,
             location: property.location,
             price: property.price,
-            startingMonth: property.startingMonth,
-            startingYear: property.startingYear,
+            startingDate: property.startingDate,
             photo: property.photo,
             creator: {
                 name: user.firstname + " " + user.lastname,
@@ -115,8 +112,7 @@ const getPropertyDetail = async (req, res) => {
             },
             totalRent,
         };
-        
-        // console.log(response);
+
         res.status(200).json(response);
     } else {
         res.status(404).json({ message: "property not found" });
@@ -126,9 +122,11 @@ const getPropertyDetail = async (req, res) => {
 const updateProperty = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, propertyType, location, price, photo } =
+        const { title, description, propertyType, location,startingMonth,
+            startingYear, price, photo } =
             req.body;
         const photoUrl = cloudinary.uploader.upload(photo);
+        const startingDate = new Date(startingYear, startingMonth);
         await Property.findByIdAndUpdate(
             { _id: id },
             {
@@ -137,6 +135,7 @@ const updateProperty = async (req, res) => {
                 propertyType,
                 location,
                 price,
+                startingDate,
                 photo: photoUrl.url || photo,
             }
         );
@@ -170,10 +169,8 @@ async function getUser(id) {
     return user;
 }
 
-
-function calculateTotalRent(startingMonth, startingYear, rent) {
+function calculateTotalRent(startDate, rent) {
     const now = new Date();
-    const startDate = new Date(startingYear, startingMonth - 1); // month is 0-indexed in JavaScript, so subtract 1 from startingMonth
     const monthsElapsed =
         (now.getFullYear() - startDate.getFullYear()) * 12 +
         now.getMonth() -

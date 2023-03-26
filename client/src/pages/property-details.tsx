@@ -261,7 +261,7 @@ const PropertyDetails = () => {
                         </Stack>
                     </Stack>
 
-                    <Stack>
+                    {/* <Stack>
                         <img
                             src="https://serpmedia.org/scigen/images/googlemaps-nyc-standard.png?crc=3787557525"
                             width="100%"
@@ -272,8 +272,8 @@ const PropertyDetails = () => {
                             }}
                             alt="logo"
                         />
-                    </Stack>
-
+                    </Stack> */}
+                    {!isCurrentUser?
                     <Box>
                         <CustomButton
                             title="Book Now"
@@ -281,7 +281,7 @@ const PropertyDetails = () => {
                             color="#FCFCFC"
                             fullWidth
                         />
-                    </Box>
+                    </Box> : <></>}
                 </Box>
             </Box>
         </Box>

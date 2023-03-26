@@ -177,7 +177,6 @@ function App() {
 
     return (
         <>
-            <ColorModeContextProvider>
                 <CssBaseline />
                 <GlobalStyles
                     styles={{ html: { WebkitFontSmoothing: "auto" } }}
@@ -233,7 +232,6 @@ function App() {
                         DashboardPage={Home}
                     ></Refine>
                 </RefineSnackbarProvider>
-            </ColorModeContextProvider>
         </>
     );
 }
