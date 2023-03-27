@@ -1,22 +1,9 @@
 import { Box, Typography, Stack } from "@pankod/refine-mui";
 import ReactApexChart from "react-apexcharts";
-import { useGetIdentity, useOne } from "@pankod/refine-core";
 
 import { ArrowCircleUpRounded } from "@mui/icons-material";
 import { TotalRevenueOptions } from "./chart.config";
-const TotalRevenue = () => {
-    const { data: user } = useGetIdentity();
-    const { data, isLoading, isError } = useOne({
-        resource: "users",
-        id: user?.userid,
-    });
-    const MyProfile = data?.data ?? [];
-    
-    if (isLoading) return <div>Loading...</div>;
-    if (isError) return <div>Error</div>;
-    const months = MyProfile.sixMonthData.months;
-    const  monthlyRents = MyProfile.sixMonthData.monthlyRents;
-    const  totalRent = MyProfile.totalRent;
+const TotalRevenue = ({months, monthlyRents, totalRent}:{months:string[], monthlyRents:number[], totalRent: number}) => {
     return (
         <Box
             p={4}
@@ -40,7 +27,7 @@ const TotalRevenue = () => {
                     />
                     <Stack>
                         <Typography fontSize={15} color="#475be8">
-                            0.8%
+                            {(monthlyRents[5]-monthlyRents[4])/monthlyRents[4]*100}%
                         </Typography>
                         <Typography fontSize={12} color="#808191">
                             Than Last Month
@@ -59,15 +46,3 @@ const TotalRevenue = () => {
 };
 
 export default TotalRevenue;
-
-
-// export const TotalRevenueSeries = [
-//     {
-//         name: "Last Month",
-//         data: [183, 124, 115, 85, 143, 143, 96],
-//     },
-//     {
-//         name: "Running Month",
-//         data: [95, 84, 72, 44, 108, 108, 47],
-//     },
-// ];

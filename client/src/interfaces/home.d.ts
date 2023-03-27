@@ -3,4 +3,5 @@ export interface PieChartProps {
     value: number,
     series: Array<number>
     colors: Array<string>
+    labels: Array<string>
 }

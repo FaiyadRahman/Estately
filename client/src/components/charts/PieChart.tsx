@@ -2,7 +2,7 @@ import { Box, Typography, Stack } from "@pankod/refine-mui";
 import { PieChartProps } from "interfaces/home";
 import ReactApexChart from "react-apexcharts";
 
-const PieChart = ({ title, value, series, colors }: PieChartProps) => {
+const PieChart = ({ title, value, series, colors, labels }: PieChartProps) => {
     return (
         <Box
             id="chart"
@@ -36,6 +36,7 @@ const PieChart = ({ title, value, series, colors }: PieChartProps) => {
                 options={{
                     chart: { type: "donut" },
                     colors,
+                    tooltip:{enabled: false},
                     legend: { show: false },
                     dataLabels: { enabled: false },
                 }}

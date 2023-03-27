@@ -1,4 +1,4 @@
-import { useList } from "@pankod/refine-core";
+import { useList, useOne, useGetIdentity } from "@pankod/refine-core";
 import { Box, Typography, Stack } from "@pankod/refine-mui";
 
 import {
@@ -6,11 +6,14 @@ import {
     PropertyCard,
     PropertyReferrals,
     TotalRevenue,
-    TopAgent,
 } from "components";
 
 const Home = () => {
-    const { data, isLoading, isError } = useList({
+    const {
+        data: propertyData,
+        isLoading: propertyLoading,
+        isError: propertyError,
+    } = useList({
         resource: "properties",
         config: {
             pagination: {
@@ -18,10 +21,30 @@ const Home = () => {
             },
         },
     });
+    const latestProperties = propertyData?.data ?? [];
 
-    const latestProperties = data?.data ?? [];
-    if (isLoading) return <Typography>Loading...</Typography>;
-    if (isError) return <Typography>Error...</Typography>;
+    const { data: user } = useGetIdentity();
+    const {
+        data: userData,
+        isLoading: userLoading,
+        isError: userError,
+    } = useOne({
+        resource: "users",
+        id: user?.userid,
+    });
+    const MyProfile = userData?.data ?? [];
+
+    if (propertyLoading || userLoading)
+        return <Typography>Loading...</Typography>;
+    if (propertyError || userError) return <Typography>Error...</Typography>;
+
+    const months = MyProfile.sixMonthData.months;
+    const monthlyRents = MyProfile.sixMonthData.monthlyRents;
+    const totalRent = MyProfile.totalRent;
+    const countProperties = MyProfile.countProperties;
+    const countUsers = MyProfile.countUsers;
+    const userPropertyCount = MyProfile.userPropertyCount;
+
     return (
         <Box>
             <Typography fontSize={25} fontWeight={700} color="#11142D">
@@ -31,25 +54,29 @@ const Home = () => {
             <Box mt="20px" display="flex" flexWrap={"wrap"} gap={4}>
                 <PieChart
                     title="Properties for Rent"
-                    value={50}
+                    value={countProperties}
                     series={[75, 25]}
+                    labels={["All Properties %", "Your Properties %"]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
                 <PieChart
                     title="Agents"
-                    value={684}
+                    value={countUsers}
                     series={[60, 40]}
+                    labels={[]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
                 <PieChart
-                    title="Total Renters"
-                    value={6584}
+                    title="Tenants"
+                    value={countProperties * 4}
                     series={[75, 25]}
+                    labels={[]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
                 <PieChart
                     title="Cities"
                     value={5}
+                    labels={[]}
                     series={[75, 25]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
@@ -61,7 +88,11 @@ const Home = () => {
                 direction={{ xs: "column", lg: "row" }}
                 gap={4}
             >
-                <TotalRevenue />
+                <TotalRevenue
+                    months={months}
+                    monthlyRents={monthlyRents}
+                    totalRent={totalRent}
+                />
                 <PropertyReferrals />
             </Stack>
             <Box
