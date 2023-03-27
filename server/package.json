@@ -1,13 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server for Estately RealState Tracker",
   "main": "server.js",
-  "scripts": {
-    "start": "nodemon server"
-  },
   "keywords": [],
-  "author": "",
+  "author": "faiyad Rahman",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",

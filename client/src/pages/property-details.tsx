@@ -210,19 +210,6 @@ const PropertyDetails = () => {
                                     Agent
                                 </Typography>
                             </Box>
-
-                            {/* <Typography
-                                        mt={1}
-                                        fontSize={16}
-                                        fontWeight={600}
-                                        color="#11142D"
-                                    >
-                                        {
-                                            propertyDetails.creator
-                                                .allProperties.length
-                                        }{" "}
-                                        Properties
-                                    </Typography> */}
                         </Stack>
 
                         <Stack
