@@ -64,12 +64,15 @@ axiosInstance.interceptors.response.use(
 
 const refreshAccessToken = async () => {
     try {
-        const response = await fetch("http://localhost:3500/auth/refresh", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        const response = await fetch(
+            "https://estately-server.onrender.com/auth/refresh",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
         return response;
     } catch (err) {
         console.log(err);
@@ -80,13 +83,16 @@ function App() {
     const authProvider: AuthProvider = {
         login: async ({ email, password }) => {
             try {
-                const response = await fetch("http://localhost:3500/auth", {
-                    method: "POST",
-                    body: JSON.stringify({ email, password }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
+                const response = await fetch(
+                    "https://estately-server.onrender.com/auth",
+                    {
+                        method: "POST",
+                        body: JSON.stringify({ email, password }),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
 
                 if (response.ok) {
                     const accessToken = await response.json();
@@ -115,7 +121,7 @@ function App() {
             const token = localStorage.getItem("token");
 
             if (token && typeof window !== "undefined") {
-                fetch("http://localhost:3500/auth/logout", {
+                fetch("https://estately-server.onrender.com/auth/logout", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -132,7 +138,7 @@ function App() {
         register: async (signUpInfo) => {
             try {
                 const response = await fetch(
-                    "http://localhost:3500/auth/signup",
+                    "https://estately-server.onrender.com/auth/signup",
                     {
                         method: "POST",
                         body: JSON.stringify(signUpInfo),
@@ -173,51 +179,49 @@ function App() {
 
     return (
         <>
-                <CssBaseline />
-                <GlobalStyles
-                    styles={{ html: { WebkitFontSmoothing: "auto" } }}
-                />
-                <RefineSnackbarProvider>
-                    <Refine
-                        dataProvider={dataProvider(
-                            "http://localhost:3500",
-                            axiosInstance
-                        )}
-                        notificationProvider={notificationProvider}
-                        ReadyPage={ReadyPage}
-                        catchAll={<ErrorComponent />}
-                        resources={[
-                            {
-                                name: "properties",
-                                list: AllProperties,
-                                show: PropertyDetails,
-                                create: CreateProperty,
-                                edit: EditProperty,
-                                icon: <VillaOutlined />,
-                            },
-                            {
-                                name: "agents",
-                                list: Agents,
-                                show: AgentProfile,
-                                icon: <PeopleOutline />,
-                            },
-                            {
-                                name: "my-profile",
-                                options: { label: "My Profile" },
-                                list: MyProfile,
-                                icon: <AccountCircleOutlined />,
-                            },
-                        ]}
-                        Title={Title}
-                        Sider={Sider}
-                        Layout={Layout}
-                        Header={Header}
-                        routerProvider={routerProvider}
-                        authProvider={authProvider}
-                        LoginPage={Login}
-                        DashboardPage={Home}
-                    ></Refine>
-                </RefineSnackbarProvider>
+            <CssBaseline />
+            <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+            <RefineSnackbarProvider>
+                <Refine
+                    dataProvider={dataProvider(
+                        "https://estately-server.onrender.com",
+                        axiosInstance
+                    )}
+                    notificationProvider={notificationProvider}
+                    ReadyPage={ReadyPage}
+                    catchAll={<ErrorComponent />}
+                    resources={[
+                        {
+                            name: "properties",
+                            list: AllProperties,
+                            show: PropertyDetails,
+                            create: CreateProperty,
+                            edit: EditProperty,
+                            icon: <VillaOutlined />,
+                        },
+                        {
+                            name: "agents",
+                            list: Agents,
+                            show: AgentProfile,
+                            icon: <PeopleOutline />,
+                        },
+                        {
+                            name: "my-profile",
+                            options: { label: "My Profile" },
+                            list: MyProfile,
+                            icon: <AccountCircleOutlined />,
+                        },
+                    ]}
+                    Title={Title}
+                    Sider={Sider}
+                    Layout={Layout}
+                    Header={Header}
+                    routerProvider={routerProvider}
+                    authProvider={authProvider}
+                    LoginPage={Login}
+                    DashboardPage={Home}
+                ></Refine>
+            </RefineSnackbarProvider>
         </>
     );
 }

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.df0bd558.css",
+    "main.js": "/static/js/main.f3beb81d.js",
+    "static/media/estately.svg": "/static/media/estately.21f175d94e3eccf48c3f1dfc756d279e.svg",
+    "static/media/logo.svg": "/static/media/logo.0b6459d7a36d0cf375e7c60764d42005.svg",
+    "index.html": "/index.html",
+    "main.df0bd558.css.map": "/static/css/main.df0bd558.css.map",
+    "main.f3beb81d.js.map": "/static/js/main.f3beb81d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.df0bd558.css",
+    "static/js/main.f3beb81d.js"
+  ]
+}
