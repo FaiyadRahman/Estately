@@ -46,6 +46,7 @@ const AllProperties = () => {
     }, [filters]);
 
     if (isLoading) return <Typography>Loading...</Typography>;
+    if (isError) return <Typography>Something went wrong 😢</Typography>;
 
     return (
         <Box>

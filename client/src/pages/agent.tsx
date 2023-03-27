@@ -10,11 +10,11 @@ const Agents = () => {
     if (isError) return <div>Error</div>;
     const allAgents = data?.data ?? [];
 
-    console.log(allAgents);
+    console.log(allAgents[0].allProperties);
     return (
         <Box>
             <Typography fontSize={25} fontWeight={700} color={"#11142d"}>
-                Agents List
+                Agents
             </Typography>
             <Box
                 mt={"20px"}

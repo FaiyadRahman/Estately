@@ -89,13 +89,14 @@ const getPropertyDetail = async (req, res) => {
     const { id } = req.params;
     let property = await Property.findOne({ _id: id });
     if (property) {
+        // console.log(property)
         const userId = property.creator.toHexString();
         const user = await getUser(userId);
         const totalRent = calculateTotalRent(
             property.startingDate,
             property.price
         );
-        console.log(totalRent);
+        // console.log(totalRent);
         const response = {
             _id: property._id,
             title: property.title,

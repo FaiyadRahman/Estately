@@ -11,15 +11,15 @@ const MyProfile = () => {
     const MyProfile = data?.data ?? [];
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error</div>;
-
+    console.log(MyProfile)
     return <Profile
       type="My"
-      name={MyProfile.firstname + " " + MyProfile.lastname}
-      email={MyProfile.email}
-      phone={MyProfile.phone}
-      location={MyProfile.location}
-      avatar={MyProfile.avater}
-      properties={MyProfile.allProperties}
+      name={MyProfile.user.firstname + " " + MyProfile.lastname}
+      email={MyProfile.user.email}
+      phone={MyProfile.user.phone}
+      location={MyProfile.user.location}
+      avatar={MyProfile.user.avater}
+      properties={MyProfile.user.allProperties}
     />;
 };
 

@@ -1,20 +1,20 @@
 import React from "react";
 import { useRouterContext, TitleProps } from "@pankod/refine-core";
 import { Button } from "@pankod/refine-mui";
-import { logo, yariga } from "assets";
+import { logo, estately } from "assets";
 
 export const Title: React.FC<TitleProps> = ({ collapsed }) => {
-  const { Link } = useRouterContext();
+    const { Link } = useRouterContext();
 
-  return (
-    <Button fullWidth variant="text" disableRipple>
-      <Link to="/">
-        {collapsed ? (
-          <img src={logo} alt="yariga" width="28px" />
-        ) : (
-          <img src={yariga} alt="yariga" width="140px" />
-        )}
-      </Link>
-    </Button>
-  );
+    return (
+        <Button fullWidth variant="text" disableRipple>
+            <Link to="/">
+                {collapsed ? (
+                    <img src={logo} alt="estately" width="28px" />
+                ) : (
+                    <img src={estately} alt="estately" width="140px" />
+                )}
+            </Link>
+        </Button>
+    );
 };

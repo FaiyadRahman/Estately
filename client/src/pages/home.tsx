@@ -30,25 +30,25 @@ const Home = () => {
 
             <Box mt="20px" display="flex" flexWrap={"wrap"} gap={4}>
                 <PieChart
-                    title="Properties for Sale"
-                    value={684}
+                    title="Properties for Rent"
+                    value={50}
                     series={[75, 25]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
                 <PieChart
-                    title="Properties for Rent"
+                    title="Agents"
                     value={684}
                     series={[60, 40]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
                 <PieChart
-                    title="Total Customers"
+                    title="Total Renters"
                     value={6584}
                     series={[75, 25]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
                 <PieChart
-                    title="Total Cities"
+                    title="Cities"
                     value={5}
                     series={[75, 25]}
                     colors={["#475be8", "#e4e8ef"]}

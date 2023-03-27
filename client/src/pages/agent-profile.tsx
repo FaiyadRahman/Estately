@@ -12,16 +12,16 @@ const AgentProfile = () => {
     const AgentProfile = data?.data ?? [];
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error</div>;
-
+    console.log("agent profile", AgentProfile)
     return (
         <Profile
             type="Agent"
-            name={AgentProfile.firstname + " " + AgentProfile.lastname}
-            email={AgentProfile.email}
-            phone={AgentProfile.phone}
-            location={AgentProfile.location}
-            avatar={AgentProfile.avater}
-            properties={AgentProfile.allProperties}
+            name={AgentProfile.user.firstname + " " + AgentProfile.user.lastname}
+            email={AgentProfile.user.email}
+            phone={AgentProfile.user.phone}
+            location={AgentProfile.user.location}
+            avatar={AgentProfile.user.avater}
+            properties={AgentProfile.user.allProperties}
         />
     );
 };

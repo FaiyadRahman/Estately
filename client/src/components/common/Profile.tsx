@@ -13,6 +13,7 @@ const Profile = ({
     location,
     properties,
 }: ProfileProps) => {
+    console.log(properties)
     return (
         <Box>
             <Typography fontSize={25} fontWeight={700} color="#11142D">

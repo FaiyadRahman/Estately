@@ -18,7 +18,7 @@ export const TotalRevenueOptions: ApexOptions = {
       show: false,
     },
   },
-  colors: ['#475BE8', '#CFC8FF'],
+  colors: ['#475BE8'],
   plotOptions: {
     bar: {
       borderRadius: 4,
@@ -36,12 +36,9 @@ export const TotalRevenueOptions: ApexOptions = {
     colors: ['transparent'],
     width: 4,
   },
-  xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-  },
   yaxis: {
     title: {
-      text: '$ (thousands)',
+      text: 'Monthly Income ($)',
     },
   },
   fill: {
@@ -54,7 +51,7 @@ export const TotalRevenueOptions: ApexOptions = {
   tooltip: {
     y: {
       formatter(val: number) {
-        return `$ ${val} thousands`;
+        return `$ ${val}`;
       },
     },
   },

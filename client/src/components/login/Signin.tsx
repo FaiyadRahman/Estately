@@ -9,7 +9,7 @@ import {
     Typography,
 } from "@pankod/refine-mui";
 
-import { yariga } from "../../assets";
+import { estately } from "../../assets";
 
 import { CustomButton } from "components";
 
@@ -67,7 +67,7 @@ const Signin = ({
                     }}
                 >
                     <div>
-                        <img src={yariga} alt="yariga Logo" />
+                        <img src={estately} alt="yariga Logo" />
                     </div>
                     <Box mt={4} minWidth="450px">
                         <TextField

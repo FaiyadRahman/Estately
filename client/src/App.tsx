@@ -10,16 +10,12 @@ import {
 
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { PeopleOutline } from "@mui/icons-material";
-import { ChatBubbleOutline } from "@mui/icons-material";
-import { StarOutlineRounded } from "@mui/icons-material";
 import { VillaOutlined } from "@mui/icons-material";
 
 import dataProvider from "@pankod/refine-simple-rest";
 import routerProvider from "@pankod/refine-react-router-v6";
 import axios, { AxiosRequestConfig } from "axios";
-import { ColorModeContextProvider } from "contexts";
 import { Title, Sider, Layout, Header } from "components/layout";
-import { CredentialResponse } from "./interfaces/google";
 import { parseJwt } from "utils/parse-jwt";
 
 import {
@@ -204,16 +200,6 @@ function App() {
                                 list: Agents,
                                 show: AgentProfile,
                                 icon: <PeopleOutline />,
-                            },
-                            {
-                                name: "reviews",
-                                list: Home,
-                                icon: <StarOutlineRounded />,
-                            },
-                            {
-                                name: "messages",
-                                list: Home,
-                                icon: <ChatBubbleOutline />,
                             },
                             {
                                 name: "my-profile",

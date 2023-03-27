@@ -1,4 +1,3 @@
-import React from "react";
 import { AgentCardProp, InfoBarProps } from "interfaces/agent";
 import { EmailOutlined, LocationCity, Phone, Place } from "@mui/icons-material";
 import { useGetIdentity } from "@pankod/refine-core";
