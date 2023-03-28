@@ -30,6 +30,9 @@ const Signin = ({
     const handleLoginWithEmail = async () => {
         login({ email, password });
     };
+    const handleDemoUserLogin = async () => {
+        login({ email: "demo_user@estately.com", password: "1234" });
+    };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -117,6 +120,16 @@ const Signin = ({
                                 title="Login"
                                 fullWidth={true}
                                 handleClick={handleLoginWithEmail}
+                            />
+                        </Box>
+                        <Box mt={2}>
+                            <CustomButton
+                                type="button"
+                                backgroundColor="#475be8"
+                                color="#fcfcfc"
+                                title="Demo User Login"
+                                fullWidth={true}
+                                handleClick={handleDemoUserLogin}
                             />
                         </Box>
                         <Box mt={2}>

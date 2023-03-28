@@ -64,9 +64,6 @@ const getUserInfoById = async (req, res) => {
             const users = await User.find()
             const sixMonthData = getTotalRentDataForLastSixMonths(properties);
             const totalRent = calculateTotalRent(properties);
-            // console.log(user);
-            // console.log({...user, sixMonthData})
-            // res.status(200).json(user);
             res.status(200).json({ user, sixMonthData, totalRent, countProperties: properties.length, countUsers: users.length, userPropertyCount: user.allProperties.count });
         } else {
             res.status(404).json({ message: "user not found" });

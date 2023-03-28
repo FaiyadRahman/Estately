@@ -62,7 +62,7 @@ const Home = () => {
                 <PieChart
                     title="Agents"
                     value={countUsers}
-                    series={[60, 40]}
+                    series={[55, 45]}
                     labels={[]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
@@ -77,7 +77,7 @@ const Home = () => {
                     title="Cities"
                     value={5}
                     labels={[]}
-                    series={[75, 25]}
+                    series={[60, 40]}
                     colors={["#475be8", "#e4e8ef"]}
                 />
             </Box>
