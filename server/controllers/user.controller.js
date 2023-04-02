@@ -117,7 +117,6 @@ function getTotalRentDataForLastSixMonths(properties) {
         "Dec",
     ];
     const monthsName = allMonths.map((month) => monthList[month]);
-    // console.log(monthsName);
     return { months: monthsName, monthlyRents: totalRent };
 }
 

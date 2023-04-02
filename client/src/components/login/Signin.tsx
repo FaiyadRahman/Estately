@@ -31,7 +31,7 @@ const Signin = ({
         login({ email, password });
     };
     const handleDemoUserLogin = async () => {
-        login({ email: "demo_user@estately.com", password: "1234" });
+        login({ email: "demouser@estately.ca", password: "1234" });
     };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -24,6 +24,7 @@ const Home = () => {
     const latestProperties = propertyData?.data ?? [];
 
     const { data: user } = useGetIdentity();
+    
     const {
         data: userData,
         isLoading: userLoading,

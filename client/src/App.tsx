@@ -66,6 +66,7 @@ const refreshAccessToken = async () => {
     try {
         const response = await fetch(
             "https://estately-server.onrender.com/auth/refresh",
+            // "http://localhost:3500/auth/refresh",
             {
                 method: "POST",
                 headers: {
@@ -85,6 +86,7 @@ function App() {
             try {
                 const response = await fetch(
                     "https://estately-server.onrender.com/auth",
+                    // "http://localhost:3500/auth",
                     {
                         method: "POST",
                         body: JSON.stringify({ email, password }),
@@ -122,6 +124,7 @@ function App() {
 
             if (token && typeof window !== "undefined") {
                 fetch("https://estately-server.onrender.com/auth/logout", {
+                    // fetch("http://localhost:3500/auth/logout", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -139,6 +142,7 @@ function App() {
             try {
                 const response = await fetch(
                     "https://estately-server.onrender.com/auth/signup",
+                    // "http://localhost:3500",
                     {
                         method: "POST",
                         body: JSON.stringify(signUpInfo),
@@ -185,6 +189,7 @@ function App() {
                 <Refine
                     dataProvider={dataProvider(
                         "https://estately-server.onrender.com",
+                        // "http://localhost:3500",
                         axiosInstance
                     )}
                     notificationProvider={notificationProvider}

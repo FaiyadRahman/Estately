@@ -14,7 +14,7 @@ const MyProfile = () => {
     console.log(MyProfile)
     return <Profile
       type="My"
-      name={MyProfile.user.firstname + " " + MyProfile.lastname}
+      name={MyProfile.user.firstname + " " + MyProfile.user.lastname}
       email={MyProfile.user.email}
       phone={MyProfile.user.phone}
       location={MyProfile.user.location}

@@ -1,14 +1,7 @@
 import { Box, Stack, Typography } from "@pankod/refine-mui";
 import { useDelete, useGetIdentity, useShow } from "@pankod/refine-core";
 import { useParams, useNavigate } from "@pankod/refine-react-router-v6";
-import {
-    ChatBubble,
-    Delete,
-    Edit,
-    Phone,
-    Place,
-    Star,
-} from "@mui/icons-material";
+import { ChatBubble, Delete, Edit, Phone, Place } from "@mui/icons-material";
 import { CustomButton } from "components";
 
 const PropertyDetails = () => {
@@ -23,10 +16,7 @@ const PropertyDetails = () => {
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error</div>;
-    console.log(propertyDetails)
     const isCurrentUser = user.email === propertyDetails.creator.email;
-    console.log("user1111111111111 " + JSON.stringify(user));
-    console.log(isCurrentUser);
     const handleDeleteProperty = () => {
         const response = window.confirm(
             "Are you sure you want to delete this property?"
@@ -140,7 +130,7 @@ const PropertyDetails = () => {
                                         color="#808191"
                                         mb={0.5}
                                     >
-                                        for one day
+                                        /month
                                     </Typography>
                                 </Stack>
                             </Box>
@@ -224,7 +214,9 @@ const PropertyDetails = () => {
                                 backgroundColor="#475BE8"
                                 color="#FCFCFC"
                                 fullWidth
-                                icon={!isCurrentUser ? <ChatBubble /> : <Edit />}
+                                icon={
+                                    !isCurrentUser ? <ChatBubble /> : <Edit />
+                                }
                                 handleClick={() => {
                                     if (isCurrentUser) {
                                         navigate(
@@ -260,15 +252,18 @@ const PropertyDetails = () => {
                             alt="logo"
                         />
                     </Stack> */}
-                    {!isCurrentUser?
-                    <Box>
-                        <CustomButton
-                            title="Book Now"
-                            backgroundColor="#475BE8"
-                            color="#FCFCFC"
-                            fullWidth
-                        />
-                    </Box> : <></>}
+                    {!isCurrentUser ? (
+                        <Box>
+                            <CustomButton
+                                title="Book Now"
+                                backgroundColor="#475BE8"
+                                color="#FCFCFC"
+                                fullWidth
+                            />
+                        </Box>
+                    ) : (
+                        <></>
+                    )}
                 </Box>
             </Box>
         </Box>
