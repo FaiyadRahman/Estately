@@ -36,7 +36,7 @@ const Form = ({
         { number: 9, month: "October" },
         { number: 10, month: "November" },
         { number: 11, month: "December" },
-    ].map((month) => <MenuItem value={month.number}>{month.month}</MenuItem>);
+    ].map((month) => <MenuItem key={month.number} value={month.number}>{month.month}</MenuItem>);
     return (
         <Box>
             <Typography fontSize={25} fontWeight={700} color="#11142d">
