@@ -27,7 +27,7 @@ const TotalRevenue = ({months, monthlyRents, totalRent}:{months:string[], monthl
                     />
                     <Stack>
                         <Typography fontSize={15} color="#475be8">
-                            {(monthlyRents[5]-monthlyRents[4])/monthlyRents[4]*100}%
+                            {Math.round((monthlyRents[5]-monthlyRents[4])/monthlyRents[4]*100)}%
                         </Typography>
                         <Typography fontSize={12} color="#808191">
                             Than Last Month

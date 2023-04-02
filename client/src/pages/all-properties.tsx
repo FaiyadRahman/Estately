@@ -107,7 +107,7 @@ const AllProperties = () => {
                                 }],"replace")}}
                             >
                                 <MenuItem value="">All</MenuItem>
-                                {["Apartment", "Condo", "Single Family", "Duplex"].map((type) =>(
+                                {["Apartment", "Condos", "Single-Family", "Duplex"].map((type) =>(
                                     <MenuItem key={type} value={type.toLowerCase()}>{type}</MenuItem>
                                 ))}
                             </Select>
