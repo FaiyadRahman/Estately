@@ -6,7 +6,7 @@ A web application that allows users to manage their real estate portfolio/compan
 
 Built with MongoDB, Express.js, React, Node.js, Refine, Typescript, and Javascript.
 
-## Project Screen Shot(s)
+## Project Screen Shots
 
 ![Screenshot-dashboard](docs/screenshots/dashboard.png)
 ![Screenshot-properties](docs/screenshots/properties.png)
