@@ -144,6 +144,7 @@ const Signin = ({
                                     </Button>
                                 </Typography>
                             </Stack>
+                            <Typography sx={{fontStyle: 'italic'}} mt={"10px"}>The sign-in process may take upto a minute as the server may need to spin up.</Typography>
                         </Box>
                     </Box>
                 </Box>

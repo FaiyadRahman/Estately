@@ -255,7 +255,7 @@ const PropertyDetails = () => {
                     {!isCurrentUser ? (
                         <Box>
                             <CustomButton
-                                title="Book Now"
+                                title="Schedule Meeting"
                                 backgroundColor="#475BE8"
                                 color="#FCFCFC"
                                 fullWidth

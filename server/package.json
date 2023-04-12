@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Server for Estately RealState Tracker",
+  "description": "Server for Estately Real-State Tracker",
   "main": "server.js",
   "keywords": [],
   "author": "faiyad Rahman",
